@@ -30,8 +30,3 @@ def root():
         "docs":    "/docs",
         "health":  "/api/v1/health",
     }
-```
-
-**Step 3 — update Procfile to just start the server directly**
-```
-web: uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT
