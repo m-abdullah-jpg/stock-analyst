@@ -1,6 +1,9 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
+# Run background setup if models missing
+import startup
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routes import router
@@ -11,10 +14,9 @@ app = FastAPI(
     version     = "1.0.0",
 )
 
-# CORS — allows the React frontend (localhost:5173) to call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins  = ["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins  = ["*"],
     allow_methods  = ["*"],
     allow_headers  = ["*"],
 )
@@ -28,3 +30,8 @@ def root():
         "docs":    "/docs",
         "health":  "/api/v1/health",
     }
+```
+
+**Step 3 — update Procfile to just start the server directly**
+```
+web: uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT
